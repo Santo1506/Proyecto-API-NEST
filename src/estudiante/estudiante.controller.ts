@@ -13,7 +13,7 @@ import { EstudianteService } from './estudiante.service';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 
-@Controller('estudiantes')
+@Controller('api/estudiantes')
 export class EstudianteController {
 
   constructor(

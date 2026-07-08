@@ -5,6 +5,8 @@ import { CursoModule } from './curso/curso.module';
 import { InscripcionModule } from './inscripcion/inscripcion.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -14,6 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     InscripcionModule,
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -25,6 +30,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+        ProfesorModule,
+    EstudianteModule,
+    CursoModule,
+    InscripcionModule,
   ],
 })
 export class AppModule {}

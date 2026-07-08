@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Gestión - Universidad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <div class="brand">
+        <h1>📚 Universidad</h1>
+        <p>Sistema de Gestión</p>
+      </div>
+      
+      <div class="nav-buttons">
+        <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+        <button class="nav-btn" data-section="profesores">Profesores</button>
+        <button class="nav-btn" data-section="estudiantes">Estudiantes</button>
+        <button class="nav-btn" data-section="cursos">Cursos</button>
+        <button class="nav-btn" data-section="inscripciones">Inscripciones</button>
+      </div>
+
+      <div class="api-config">
+        <label>URL Backend:</label>
+        <input id="apiUrl" type="text" value="http://localhost:3000">
+        <button id="saveUrl" class="btn-small">Guardar</button>
+        <button id="testApi" class="btn-small">Probar</button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <header class="header">
+        <h2 id="pageTitle">Dashboard</h2>
+        <button id="refreshBtn" class="btn-refresh">🔄 Actualizar</button>
+      </header>
+
+      <div id="alert" class="alert" hidden></div>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+        <div class="stats">
+          <div class="stat-card">
+            <span>Estudiantes</span>
+            <strong id="countEstudiantes">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Profesores</span>
+            <strong id="countProfesores">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Cursos</span>
+            <strong id="countCursos">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Inscripciones</span>
+            <strong id="countInscripciones">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFESORES -->
+      <section id="profesores" class="section">
+        <div class="grid-2">
+          <div class="form-card">
+            <h3>Nuevo Profesor</h3>
+            <form id="formProfesor">
+              <input type="hidden" id="profId">
+              <input type="text" id="profNombre" placeholder="Nombre" required>
+              <input type="email" id="profCorreo" placeholder="Correo" required>
+              <input type="text" id="profDepartamento" placeholder="Departamento" required>
+              <button type="submit" class="btn">Guardar</button>
+              <button type="button" class="btn-secondary" id="cancelProf">Cancelar</button>
+            </form>
+          </div>
+
+          <div class="table-card">
+            <h3>Profesores</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Departamento</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaProfesores"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESTUDIANTES -->
+      <section id="estudiantes" class="section">
+        <div class="grid-2">
+          <div class="form-card">
+            <h3>Nuevo Estudiante</h3>
+            <form id="formEstudiante">
+              <input type="hidden" id="estId">
+              <input type="text" id="estNombre" placeholder="Nombre" required>
+              <input type="email" id="estCorreo" placeholder="Correo" required>
+              <input type="text" id="estCarrera" placeholder="Carrera" required>
+              <input type="number" id="estSemestre" placeholder="Semestre (1-10)" min="1" max="10" required>
+              <button type="submit" class="btn">Guardar</button>
+              <button type="button" class="btn-secondary" id="cancelEst">Cancelar</button>
+            </form>
+          </div>
+
+          <div class="table-card">
+            <h3>Estudiantes</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Carrera</th>
+                  <th>Semestre</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaEstudiantes"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- CURSOS -->
+      <section id="cursos" class="section">
+        <div class="grid-2">
+          <div class="form-card">
+            <h3>Nuevo Curso</h3>
+            <form id="formCurso">
+              <input type="hidden" id="curId">
+              <input type="text" id="curNombre" placeholder="Nombre" required>
+              <input type="number" id="curCreditos" placeholder="Créditos" min="1" required>
+              <select id="curProfesor" required>
+                <option value="">Seleccionar Profesor</option>
+              </select>
+              <input type="number" id="curCupo" placeholder="Cupo máximo" min="1" required>
+              <button type="submit" class="btn">Guardar</button>
+              <button type="button" class="btn-secondary" id="cancelCur">Cancelar</button>
+            </form>
+          </div>
+
+          <div class="table-card">
+            <h3>Cursos</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Créditos</th>
+                  <th>Profesor</th>
+                  <th>Cupo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaCursos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- INSCRIPCIONES -->
+      <section id="inscripciones" class="section">
+        <div class="grid-2">
+          <div class="form-card">
+            <h3>Nueva Inscripción</h3>
+            <form id="formInscripcion">
+              <input type="hidden" id="insId">
+              <select id="insEstudiante" required>
+                <option value="">Seleccionar Estudiante</option>
+              </select>
+              <select id="insCurso" required>
+                <option value="">Seleccionar Curso</option>
+              </select>
+              <select id="insEstado" required>
+                <option value="activa">Activa</option>
+                <option value="aprobada">Aprobada</option>
+                <option value="reprobada">Reprobada</option>
+              </select>
+              <button type="submit" class="btn">Guardar</button>
+              <button type="button" class="btn-secondary" id="cancelIns">Cancelar</button>
+            </form>
+          </div>
+
+          <div class="table-card">
+            <h3>Inscripciones</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Estudiante</th>
+                  <th>Curso</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaInscripciones"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

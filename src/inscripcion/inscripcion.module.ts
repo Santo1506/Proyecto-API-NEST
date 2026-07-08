@@ -7,6 +7,7 @@ import { InscripcionService } from './inscripcion.service';
 import { Inscripcion } from './entities/inscripcion.entity';
 import { Estudiante } from '../estudiante/entities/estudiante.entity';
 import { Curso } from '../curso/entities/curso.entity';
+import { Nota } from '../notas/entities/nota.entity';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { Curso } from '../curso/entities/curso.entity';
       Inscripcion,
       Estudiante,
       Curso,
+      Nota,
     ]),
   ],
   controllers: [

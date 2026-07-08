@@ -13,7 +13,7 @@ import { InscripcionService } from './inscripcion.service';
 import { CreateInscripcionDto } from './dto/create-inscripcion.dto';
 import { UpdateInscripcionDto } from './dto/update-inscripcion.dto';
 
-@Controller('inscripciones')
+@Controller('api/inscripciones')
 export class InscripcionController {
 
   constructor(
