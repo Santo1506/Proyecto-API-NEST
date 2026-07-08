@@ -1,11 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
+
 import { InscripcionService } from './inscripcion.service';
 import { CreateInscripcionDto } from './dto/create-inscripcion.dto';
 import { UpdateInscripcionDto } from './dto/update-inscripcion.dto';
 
-@Controller('inscripcion')
+@Controller('inscripciones')
 export class InscripcionController {
-  constructor(private readonly inscripcionService: InscripcionService) {}
+
+  constructor(
+    private readonly inscripcionService: InscripcionService,
+  ) {}
 
   @Post()
   create(@Body() createInscripcionDto: CreateInscripcionDto) {
@@ -18,17 +31,25 @@ export class InscripcionController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.inscripcionService.findOne(+id);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.inscripcionService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInscripcionDto: UpdateInscripcionDto) {
-    return this.inscripcionService.update(+id, updateInscripcionDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateInscripcionDto: UpdateInscripcionDto,
+  ) {
+    return this.inscripcionService.update(id, updateInscripcionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.inscripcionService.remove(+id);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.inscripcionService.remove(id);
   }
+
 }
