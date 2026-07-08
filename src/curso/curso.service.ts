@@ -46,9 +46,8 @@ export class CursoService {
   }
 
   async update(id: number, updateCursoDto: UpdateCursoDto) {
-    await this.findOne(id); // Verifica que existe
+    await this.findOne(id);
 
-    // Si cambió el profesor_id, verifica que el nuevo profesor existe
     if (updateCursoDto.profesor_id) {
       const profesor = await this.profesorRepository.findOne({
         where: { id: updateCursoDto.profesor_id },
